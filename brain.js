@@ -2,6 +2,10 @@ const database = require("./database");
 
 const length = 2000;
 
+function learn(message, reply) {
+    database.storeNewMessagePair(message, reply);
+}
+
 function generate(prompt) {
     let replyPairs = [];
     let words = prompt.split(" ");
@@ -56,10 +60,6 @@ function tokeniseReplies(replyPairs) {
         }
     }
     return tokensWithCounts;
-}
-
-function learn(message, reply) {
-
 }
 
 module.exports = { generate, learn }
