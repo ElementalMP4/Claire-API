@@ -1,4 +1,5 @@
-const db = require('better-sqlite3')('Claire.db');
+const config = require("./config.json");
+const db = require('better-sqlite3')(config.databaseName || "Claire.db");
 
 const GET_ALL_SENTENCES_CONTAINING_WORD = "SELECT * FROM MessagePairs WHERE LOWER(message) LIKE ?";
 

@@ -1,25 +1,29 @@
 const database = require("./database");
 
-function generate(prompt) {
-    const replyPairs = database.getAllRepliesForWord(prompt);
-    let tokens = tokeniseReplies(replyPairs);
+const length = 2000;
 
-    if (tokens.length == 0) return null;
+function generate(prompt) {
+    let replyPairs = [];
+    let words = prompt.split(" ");
     let result = "";
-    let next = getRandomStartWord(words);
-    if (next == null) return null;
+    for (word of words) {
+        replyPairs = [...replyPairs, ...database.getAllRepliesForWord(word)];
+    }
+    let tokens = tokeniseReplies(replyPairs);
+    if (tokens.length == 0) return "Huh";
+    let next = getRandomStartWord(tokens);
     while (next.next !== "StopWord") {
         if (result.length + (next.word + " ").length > length) break;
         result += next.word + " ";
-        let potentials = getWordList(words, next.getNext());
+        let potentials = getWordList(tokens, next.next);
         next = getMostLikely(potentials);
     }
-    if (result.length + next.word.length <= length) result.push(next.word);
+    if (result.length + next.word.length <= length) result += next.word;
     return result;
 }
 
-function getWordList(wordList) {
-
+function getWordList(wordList, nextWord) {
+    return wordList.filter(x => x.word == nextWord);
 }
 
 function getRandomStartWord(wordList) {
