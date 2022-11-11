@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const config = require("./config.json");
+const morgan = require("morgan");
 
 const claire = require("./brain");
 
+app.use(morgan("dev"));
 app.use(express.static('public'));
 
 app.get("/", (req, res) => {
