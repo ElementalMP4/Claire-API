@@ -4,6 +4,7 @@ const config = require("./config.json");
 const morgan = require("morgan");
 
 const claire = require("./brain");
+const db = require("./database");
 
 app.use(morgan("dev"));
 app.use(express.static('public'));
@@ -12,9 +13,15 @@ app.get("/", (req, res) => {
     res.redirect("/index.html");
 });
 
+app.get("/count", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ messagePairCount: db.getPairCount() }))
+});
+
 app.get('/chat', (req, res) => {
     const prompt = req.query.prompt;
-    res.send(JSON.stringify({ message: claire.generate(prompt) }));
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ message: claire.generate(prompt) }));
 });
 
 app.get("/learn", (req, res) => {
