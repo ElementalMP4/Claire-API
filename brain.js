@@ -23,7 +23,7 @@ function generate(prompt) {
         next = getMostLikely(potentials);
     }
     if (result.length + next.word.length <= length) result += next.word;
-    return result;
+    return result.replaceAll("/@/", "'");
 }
 
 function getWordList(wordList, nextWord) {
