@@ -62,4 +62,4 @@ function tokeniseReplies(replyPairs) {
     return tokensWithCounts;
 }
 
-module.exports = { generate, learn }
+module.exports = { generate, learn, getMostLikely }
